@@ -2,21 +2,103 @@
 
 import { motion } from "framer-motion";
 import { ArrowRight } from "@phosphor-icons/react";
-import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
+
+const FRAME_COUNT = 171;
+const FPS = 15;
 
 export default function Hero() {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [images, setImages] = useState<HTMLImageElement[]>([]);
+  const frameRef = useRef(0);
+  const lastDrawTime = useRef(0);
+
+  // Preload frames into memory
+  useEffect(() => {
+    const loadedImages: HTMLImageElement[] = [];
+
+    for (let i = 1; i <= FRAME_COUNT; i++) {
+      const img = new Image();
+      const paddedIndex = i.toString().padStart(3, '0');
+      img.src = `/frames/frame_${paddedIndex}.webp`;
+      loadedImages.push(img);
+    }
+    
+    setImages(loadedImages);
+  }, []);
+
+  // Frame Sequence Player Engine
+  useEffect(() => {
+    if (!canvasRef.current || images.length === 0) return;
+
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    let animationFrameId: number;
+
+    const render = (time: number) => {
+      if (time - lastDrawTime.current > 1000 / FPS) {
+        const img = images[frameRef.current];
+        
+        if (img && img.complete && img.naturalWidth > 0) {
+          // Calculate object-cover dimensions
+          const canvasRatio = canvas.width / canvas.height;
+          const imgRatio = img.naturalWidth / img.naturalHeight;
+          let drawWidth = canvas.width;
+          let drawHeight = canvas.height;
+          let offsetX = 0;
+          let offsetY = 0;
+
+          if (canvasRatio > imgRatio) {
+            drawHeight = canvas.width / imgRatio;
+            offsetY = (canvas.height - drawHeight) / 2;
+          } else {
+            drawWidth = canvas.height * imgRatio;
+            offsetX = (canvas.width - drawWidth) / 2;
+          }
+
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
+        }
+
+        frameRef.current = (frameRef.current + 1) % FRAME_COUNT;
+        lastDrawTime.current = time;
+      }
+
+      animationFrameId = requestAnimationFrame(render);
+    };
+
+    // Handle high resolution display sizing
+    const handleResize = () => {
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = window.innerWidth * dpr;
+      canvas.height = window.innerHeight * dpr;
+      ctx.scale(dpr, dpr);
+      
+      // Force an immediate draw after resize to prevent flickering
+      lastDrawTime.current = 0; 
+    };
+    
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    
+    animationFrameId = requestAnimationFrame(render);
+
+    return () => {
+      cancelAnimationFrame(animationFrameId);
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [images]);
+
   return (
     <section className="relative min-h-[100dvh] w-full flex items-center justify-start pt-24 pb-12 px-4 md:px-16 overflow-hidden z-10">
       
-      {/* Full Bleed Background Image/GIF */}
-      <div className="absolute inset-0 z-0">
-        <Image 
-          src="/jollofmotion.gif" 
-          alt="Cinematic presentation of Jollof rice and grilled Suya" 
-          fill
-          className="object-cover object-center"
-          priority
-          unoptimized
+      {/* Full Bleed Image Sequence Canvas */}
+      <div className="absolute inset-0 z-0 bg-zinc-950">
+        <canvas 
+          ref={canvasRef} 
+          className="w-full h-full block" 
         />
         {/* Dark overlay for readability */}
         <div className="absolute inset-0 bg-black/40 z-10" />
@@ -32,7 +114,7 @@ export default function Hero() {
             type: "spring", 
             stiffness: 50, 
             damping: 20, 
-            delay: 22.8 // Delay for ~2 loops of the 11.4s GIF
+            delay: 22.8 // Delay for exactly 2 loops of 11.4s each
           }}
           className="max-w-xl bg-zinc-950/30 backdrop-blur-2xl border border-white/10 shadow-2xl rounded-[2.5rem] p-8 md:p-12 flex flex-col items-start"
         >
