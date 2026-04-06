@@ -29,7 +29,7 @@ export default function Navbar() {
             { name: "Menu", href: "/menu" },
             { name: "Events", href: "/events" },
             { name: "Reservations", href: "#reservations" },
-            { name: "Our Story", href: "#our-story" }
+            { name: "Our Story", href: "/our-story" }
           ].map((item) => (
             <Link key={item.name} href={item.href} className="hover:text-zinc-50 transition-colors duration-300">
               {item.name}
@@ -69,7 +69,7 @@ export default function Navbar() {
               { name: "Menu", href: "/menu" },
               { name: "Events", href: "/events" },
               { name: "Reservations", href: "#reservations" },
-              { name: "Our Story", href: "#our-story" }
+              { name: "Our Story", href: "/our-story" }
             ].map((item) => (
               <Link key={item.name} href={item.href} onClick={() => setIsOpen(false)}>
                 {item.name}
