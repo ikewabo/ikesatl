@@ -25,9 +25,14 @@ export default function Navbar() {
 
         {/* Desktop Menu */}
         <div className="hidden md:flex items-center gap-8 text-sm font-medium tracking-tight text-zinc-400">
-          {["Menu", "Reservations", "Private Events", "Our Story"].map((item) => (
-            <Link key={item} href={`#${item.toLowerCase().replace(' ', '-')}`} className="hover:text-zinc-50 transition-colors duration-300">
-              {item}
+          {[
+            { name: "Menu", href: "/menu" },
+            { name: "Reservations", href: "#reservations" },
+            { name: "Private Events", href: "#private-events" },
+            { name: "Our Story", href: "#our-story" }
+          ].map((item) => (
+            <Link key={item.name} href={item.href} className="hover:text-zinc-50 transition-colors duration-300">
+              {item.name}
             </Link>
           ))}
         </div>
@@ -60,9 +65,14 @@ export default function Navbar() {
           className="md:hidden absolute top-24 left-6 right-6 bg-zinc-900 border border-white/10 rounded-2xl p-6 shadow-2xl origin-top"
         >
           <div className="flex flex-col gap-6 text-center text-lg font-medium text-zinc-300">
-            {["Menu", "Reservations", "Private Events", "Our Story"].map((item) => (
-              <Link key={item} href={`#${item.toLowerCase().replace(' ', '-')}`} onClick={() => setIsOpen(false)}>
-                {item}
+            {[
+              { name: "Menu", href: "/menu" },
+              { name: "Reservations", href: "#reservations" },
+              { name: "Private Events", href: "#private-events" },
+              { name: "Our Story", href: "#our-story" }
+            ].map((item) => (
+              <Link key={item.name} href={item.href} onClick={() => setIsOpen(false)}>
+                {item.name}
               </Link>
             ))}
             <button className="bg-accent text-zinc-950 px-6 py-3 rounded-full font-bold mt-4">

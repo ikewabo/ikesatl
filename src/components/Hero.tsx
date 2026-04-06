@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { ArrowRight } from "@phosphor-icons/react";
 import { useEffect, useRef } from "react";
+import Link from "next/link";
 
 const FRAME_COUNT = 171;
 const FPS = 15;
@@ -149,13 +150,15 @@ export default function Hero() {
                 Reserve a Table
                 <ArrowRight weight="bold" className="group-hover:translate-x-1 transition-transform" />
               </motion.button>
-              <motion.button 
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.98 }}
-                className="flex items-center gap-3 bg-zinc-900/40 border border-zinc-700 hover:bg-zinc-800 text-zinc-50 px-8 py-4 rounded-full text-sm font-bold tracking-tight transition-colors w-full sm:w-auto justify-center"
-              >
-                View Menu
-              </motion.button>
+              <Link href="/menu" className="w-full sm:w-auto">
+                <motion.button 
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="flex items-center gap-3 bg-zinc-900/40 border border-zinc-700 hover:bg-zinc-800 text-zinc-50 px-8 py-4 rounded-full text-sm font-bold tracking-tight transition-colors w-full justify-center"
+                >
+                  View Menu
+                </motion.button>
+              </Link>
             </div>
           </motion.div>
 
