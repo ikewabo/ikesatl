@@ -27,8 +27,8 @@ export default function Navbar() {
         <div className="hidden md:flex items-center gap-8 text-sm font-medium tracking-tight text-zinc-400">
           {[
             { name: "Menu", href: "/menu" },
+            { name: "Events", href: "/events" },
             { name: "Reservations", href: "#reservations" },
-            { name: "Private Events", href: "#private-events" },
             { name: "Our Story", href: "#our-story" }
           ].map((item) => (
             <Link key={item.name} href={item.href} className="hover:text-zinc-50 transition-colors duration-300">
@@ -67,8 +67,8 @@ export default function Navbar() {
           <div className="flex flex-col gap-6 text-center text-lg font-medium text-zinc-300">
             {[
               { name: "Menu", href: "/menu" },
+              { name: "Events", href: "/events" },
               { name: "Reservations", href: "#reservations" },
-              { name: "Private Events", href: "#private-events" },
               { name: "Our Story", href: "#our-story" }
             ].map((item) => (
               <Link key={item.name} href={item.href} onClick={() => setIsOpen(false)}>
