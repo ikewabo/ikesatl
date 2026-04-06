@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { ArrowRight } from "@phosphor-icons/react";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 
 const FRAME_COUNT = 171;
@@ -10,6 +10,7 @@ const FPS = 15;
 
 export default function Hero() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [contentDelay, setContentDelay] = useState(22.8);
   
   const imagesQueue = useRef<HTMLImageElement[]>([]);
   const loadedCount = useRef(0);
@@ -92,6 +93,11 @@ export default function Hero() {
 
     animationFrameId = requestAnimationFrame(render);
 
+    // Bypass 2-loop rule on mobile to show content immediately
+    if (window.innerWidth < 768) {
+      setContentDelay(0);
+    }
+
     return () => {
       cancelAnimationFrame(animationFrameId);
     };
@@ -125,7 +131,7 @@ export default function Hero() {
               type: "spring", 
               stiffness: 50, 
               damping: 20, 
-              delay: 22.8 // Delay for exactly 2 loops of 11.4s each
+              delay: contentDelay // 22.8s on Desktop, 0s on Mobile
             }}
             className="max-w-xl mx-auto md:mx-0 bg-zinc-950/30 backdrop-blur-2xl border border-white/10 shadow-2xl rounded-[2.5rem] p-6 md:p-12 flex flex-col items-center text-center md:items-start md:text-left"
           >
