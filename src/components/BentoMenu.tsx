@@ -67,7 +67,7 @@ export default function BentoMenu() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
               transition={{ type: "spring", stiffness: 100, damping: 20, delay: index * 0.1 }}
-              className={`group relative rounded-[2.5rem] overflow-hidden border border-white/5 bg-zinc-900/50 shadow-2xl ${item.colSpan} ${item.rowSpan}`}
+              className={`group relative rounded-[2.5rem] overflow-hidden border border-white/5 bg-zinc-900/50 shadow-2xl min-h-[350px] md:min-h-0 ${item.colSpan} ${item.rowSpan}`}
             >
               <div className="absolute inset-0 bg-zinc-950/20 group-hover:bg-transparent transition-colors duration-500 z-10" />
               <div className="absolute inset-x-0 bottom-0 p-8 z-20 bg-gradient-to-t from-zinc-950/90 via-zinc-950/40 to-transparent">
